@@ -114,9 +114,10 @@ def transcribe_audio(client, audio_file_path):
             update_frequency = 10  # Update UI every 10 chunks to reduce overhead
             
             for chunk in response:
-                delta = chunk.choices[0].get("delta", {}).get("content")
-                if delta:
-                    transcription += delta
+                delta = chunk.choices[0].get("delta", {})
+                # Check if delta is not None and has content
+                if delta and "content" in delta and delta["content"]:
+                    transcription += delta["content"]
                     chunk_count += 1
                     
                     # Update progress UI less frequently to reduce overhead

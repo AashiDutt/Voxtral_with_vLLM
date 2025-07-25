@@ -5,4 +5,5 @@ huggingface-hub>=0.19.0
 pyngrok>=6.0.0
 requests>=2.28.0
 yt-dlp>=2023.12.30
-pydub>=0.25.1 
+pydub>=0.25.1
+pytest>=7.0.0 

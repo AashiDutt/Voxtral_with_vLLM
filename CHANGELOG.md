@@ -7,6 +7,9 @@
 - Reduced UI update frequency during transcription to improve performance
 - Ensured proper cleanup of UI elements after transcription completion
 
+### Fixed
+- Fixed handling of None delta values in transcription chunks
+
 ## v1.0.0 - 2025-07-24
 
 ### Added
