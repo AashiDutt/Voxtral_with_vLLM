@@ -109,20 +109,26 @@ def transcribe_audio(client, audio_file_path):
             progress_bar = st.progress(0)
             status_text = st.empty()
             
-            # Collect all chunks first to get total count
-            chunks = list(response)
-            total_chunks = len(chunks)
+            # Process chunks as they arrive to reduce memory usage
+            chunk_count = 0
+            update_frequency = 10  # Update UI every 10 chunks to reduce overhead
             
-            for i, chunk in enumerate(chunks):
+            for chunk in response:
                 delta = chunk.choices[0].get("delta", {}).get("content")
                 if delta:
                     transcription += delta
-                    progress = min((i + 1) / max(total_chunks, 1), 1.0)
-                    progress_bar.progress(progress)
-                    status_text.text(f"Transcribing... {len(transcription)} characters")
+                    chunk_count += 1
+                    
+                    # Update progress UI less frequently to reduce overhead
+                    if chunk_count % update_frequency == 0:
+                        status_text.text(f"Transcribing... {len(transcription)} characters")
             
+            # Ensure progress bar completes and clean up UI elements
+            progress_bar.progress(1.0)
+            time.sleep(0.1)  # Small delay to ensure UI updates
             progress_bar.empty()
             status_text.empty()
+            
             return transcription
     except Exception as e:
         st.error(f"Error during transcription: {str(e)}")
